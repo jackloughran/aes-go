@@ -16,7 +16,7 @@ func subword(word uint32) uint32 {
 	return a0 | a1 | a2 | a3
 }
 
-func keyExpansion(key []uint32, nK, nR int) [][]uint32 {
+func KeyExpansion(key []uint32, nK, nR int) [][]uint32 {
 	w := make([]uint32, 4*(nR+1))
 
 	for i := 0; i < nK; i++ {

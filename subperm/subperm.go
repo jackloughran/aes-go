@@ -6,7 +6,7 @@ import (
 	"github.com/jackloughran/aes-go/shared"
 )
 
-func subBytes(state []uint32) []uint32 {
+func SubBytes(state []uint32) []uint32 {
 	result := make([]uint32, len(state))
 	for i, word := range state {
 		b0 := uint32(shared.SboxForward[word>>24]) << 24
@@ -20,7 +20,7 @@ func subBytes(state []uint32) []uint32 {
 	return result
 }
 
-func shiftRows(state []uint32) []uint32 {
+func ShiftRows(state []uint32) []uint32 {
 	result := make([]uint32, 4)
 	result[0] = state[0]
 	result[1] = state[1]<<8 | state[1]>>24
@@ -30,7 +30,7 @@ func shiftRows(state []uint32) []uint32 {
 	return result
 }
 
-func mixColumns(state []uint32) []uint32 {
+func MixColumns(state []uint32) []uint32 {
 	cols := shared.FlipRowsAndColumns(state)
 	result := make([]uint32, 4)
 	for i, col := range cols {
@@ -45,4 +45,13 @@ func mixColumns(state []uint32) []uint32 {
 	}
 
 	return shared.FlipRowsAndColumns(result)
+}
+
+func AddRoundKey(state, key []uint32) []uint32 {
+	result := make([]uint32, 4)
+	for i, w := range state {
+		result[i] = w ^ key[i]
+	}
+
+	return result
 }
