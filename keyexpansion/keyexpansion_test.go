@@ -28,7 +28,7 @@ func TestKeyExpansionAES128(t *testing.T) {
 	Nk := 4
 	Nr := 10
 	key := []uint32{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f}
-	encKeys, decKeys := keyExpansion(key, Nk, Nr)
+	encKeys := keyExpansion(key, Nk, Nr)
 
 	expectedEncKeys := [][]uint32{
 		{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f},
@@ -45,22 +45,6 @@ func TestKeyExpansionAES128(t *testing.T) {
 	}
 	if !shared.Uint32MatrixEqual(expectedEncKeys, encKeys) {
 		t.Error("Key expansion algorithm failed for encryption keys")
-	}
-	expectedDecKeys := [][]uint32{
-		{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f},
-		{0x8c56dff0, 0x825dd3f9, 0x805ad3fc, 0x8659d7fd},
-		{0xa0db0299, 0x2286d160, 0xa2dc029c, 0x2485d561},
-		{0xc7c6e391, 0xe54032f1, 0x479c306d, 0x6319e50c},
-		{0xa8a2f504, 0x4de2c7f5, 0x0a7ef798, 0x69671294},
-		{0x2ec41027, 0x6326d7d2, 0x6958204a, 0x003f32de},
-		{0x72e3098d, 0x11c5de5f, 0x789dfe15, 0x78a2cccb},
-		{0x8d82fc74, 0x9c47222b, 0xe4dadc3e, 0x9c7810f5},
-		{0x1362a463, 0x8f258648, 0x6bff5a76, 0xf7874a83},
-		{0x13aa29be, 0x9c8faff6, 0xf770f580, 0x00f7bf03},
-		{0x13111d7f, 0xe3944a17, 0xf307a78b, 0x4d2b30c5},
-	}
-	if !shared.Uint32MatrixEqual(expectedDecKeys, decKeys) {
-		t.Error("Key expansion algorithm failed for decryption keys")
-		t.Errorf("Expected \n%s\n but got\n %s", shared.Uint32MatrixToString(expectedDecKeys), shared.Uint32MatrixToString(decKeys))
+		t.Errorf("Expected \n%s\n but got\n %s", shared.Uint32MatrixToString(expectedEncKeys), shared.Uint32MatrixToString(encKeys))
 	}
 }

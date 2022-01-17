@@ -102,3 +102,35 @@ func Uint32MatrixToString(a [][]uint32) string {
 	}
 	return result.String()
 }
+
+func FlipRowsAndColumns(state []uint32) []uint32 {
+	result := make([]uint32, 4)
+	for i := 0; i < 4; i++ {
+		b0 := uint32((state[0] & (0xff000000 >> (i * 8))) << (i * 8))
+		b1 := uint32((state[1]&(0xff000000>>(i*8)))<<(i*8)) >> 8
+		b2 := uint32((state[2]&(0xff000000>>(i*8)))<<(i*8)) >> 16
+		b3 := uint32((state[3]&(0xff000000>>(i*8)))<<(i*8)) >> 24
+
+		result[i] = b0 | b1 | b2 | b3
+	}
+
+	return result
+}
+
+func FiniteFieldMultiply(a, b byte) byte {
+	// https://en.wikipedia.org/wiki/Finite_field_arithmetic#Rijndael's_(AES)_finite_field
+	var p byte
+	for i := 0; i < 8; i++ {
+		if b&1 == 1 {
+			p ^= a
+		}
+		b >>= 1
+		carry := (a & 0b10000000) == 0b10000000
+		a <<= 1
+		if carry {
+			a ^= 0x1b
+		}
+	}
+
+	return p
+}
